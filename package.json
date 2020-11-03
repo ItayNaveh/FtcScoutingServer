@@ -1,0 +1,23 @@
+{
+  "name": "ftcscoutingserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItayNaveh/FtcScoutingServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ItayNaveh/FtcScoutingServer/issues"
+  },
+  "homepage": "https://github.com/ItayNaveh/FtcScoutingServer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "spoop-db": "^2.0.1"
+  }
+}
