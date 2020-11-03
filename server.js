@@ -22,7 +22,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/get_team_data", (req, res) => {
-    res.send(db.getDB());
+    res.send({
+        data: db.getDB()
+    });
     res.end();
 });
 
