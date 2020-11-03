@@ -15,8 +15,8 @@ app.get("/", (req, res) => {
     res.end();
 });
 
-app.get("/get_team_data", async(req, res) => {
-    res.send("team data");
+app.get("/get_team_data", (req, res) => {
+    res.send(db.getDB());
     res.end();
 });
 
