@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
     res.end();
 });
 
-app.get("/get_team_data", (req, res) => {
+app.get("/get_team_data", async(req, res) => {
     res.send({
-        data: db.getDB()
+        data: await db.getDB()
     });
     res.end();
 });
