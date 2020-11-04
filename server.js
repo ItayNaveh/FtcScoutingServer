@@ -53,7 +53,9 @@ app.post("/add_team_data", async(req, res) => {
 app.post("/clear_all_data", (req, res) => {
     if (req.body.password) {
         if (req.body.password == process.env.PASSWORD) {
-            fs.writeFile("teams.csv", "teamNumber, teamName");
+            fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
+                if (err) throw err;
+            });
             res.send("done");
         }
     } else {
