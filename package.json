@@ -18,6 +18,6 @@
   "homepage": "https://github.com/ItayNaveh/FtcScoutingServer#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "spoop-db": "^2.0.1"
+    "spoop-db": "^2.0.2"
   }
 }

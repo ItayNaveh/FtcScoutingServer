@@ -1,7 +1,7 @@
 const PORT = process.env.PORT || 3000;
 
 const spoopDB = require("spoop-db");
-const db = spoopDB.createDB("teams.db");
+const db = spoopDB.createDBNoId("teams.db");
 
 const express = require("express");
 const app = express();
@@ -10,8 +10,8 @@ const app = express();
 app.use(express.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET", "POST");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
+    // res.header("Access-Control-Allow-Methods", "GET", "POST");
+    // res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
 
@@ -30,7 +30,6 @@ app.get("/get_team_data", async(req, res) => {
 
 app.post("/add_team_data", async(req, res) => {
     await db.add({
-        id: await db.autoID(),
         teamNumber: req.body.teamNumber,
         teamName: req.body.teamName
     });
