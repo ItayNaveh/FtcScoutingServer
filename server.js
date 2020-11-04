@@ -50,6 +50,19 @@ app.post("/add_team_data", async(req, res) => {
     res.end();
 });
 
+app.post("/clear_all_data", (req, res) => {
+    if (req.body.password) {
+        if (req.body.password == process.env.PASSWORD) {
+            fs.writeFile("teams.csv", "teamNumber, teamName");
+            res.send("done");
+        }
+    } else {
+        res.send("no");
+    }
+
+    res.end();
+});
+
 
 app.listen(PORT, function() {
     console.log(`Listening at: ${this.address()["address"]}:${PORT}`);
