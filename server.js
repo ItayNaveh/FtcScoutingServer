@@ -32,7 +32,9 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await db.getDB()
     // });
-    res.send(await fs.promises.readFile("teams.csv", "utf-8"));
+    res.send({
+        data: await fs.promises.readFile("teams.csv", "utf-8")
+    });
     res.end();
 });
 
