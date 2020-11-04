@@ -1,7 +1,14 @@
 const PORT = process.env.PORT || 3000;
 
-const spoopDB = require("spoop-db");
-const db = spoopDB.createDBNoId("teams.db");
+// const spoopDB = require("spoop-db");
+// const db = spoopDB.createDBNoId("teams.db");
+
+const fs = require("fs");
+const teams = fs.createWriteStream("teams.csv", {
+    flags:'a',
+    autoClose: true
+});
+const fsPromises = require("fs/promises");
 
 const express = require("express");
 const app = express();
@@ -23,19 +30,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/get_team_data", async(req, res) => {
-    res.send({
-        data: await db.getDB()
-    });
+    // res.send({
+    //     data: await db.getDB()
+    // });
+    res.send(await fsPromises.readFile("teams.csv", "utf-8"));
     res.end();
 });
 
 app.post("/add_team_data", async(req, res) => {
-    await db.add({
-        teamNumber: req.body.teamNumber,
-        teamName: req.body.teamName
-    });
-    console.log("/add_team_data: body:", req.body);
-    res.send(`thanks for ${req.body}`);
+    // await db.add({
+    //     teamNumber: req.body.teamNumber,
+    //     teamName: req.body.teamName
+    // });
+    const {teamNumber, teamName} = req.body;
+    teams.write(`${teamNumber}, ${teamName}`);
+    // console.log("/add_team_data: body:", req.body);
+    res.send("thanks");
     res.end();
 });
 
