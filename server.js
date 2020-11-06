@@ -64,6 +64,7 @@ app.post("/add_team_data", async(req, res) => {
     // });
     const {teamNumber, teamName} = req.body;
     // teams.write(`\n${teamNumber}, ${teamName}`);
+    console.log("Inserting:", `INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`);
     client.query(`INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`, (err, result) => {
         if (err) throw err;
         console.log("Done:", result);
