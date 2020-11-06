@@ -44,7 +44,7 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await fs.promises.readFile("teams.csv", "utf-8")
     // });
-    console.log("Getting request from", req.url);
+    console.log("Getting request from", req.hostname);
     console.log("GETTING STUFF");
     const result = await client.query("SELECT * FROM public.teams_test;");
     console.log("GOT?");
