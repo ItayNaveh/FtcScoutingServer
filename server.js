@@ -46,6 +46,8 @@ app.get("/get_team_data", async(req, res) => {
     // });
     client.query("SELECT * FROM public.teams_test;", (err, result) => {
         if (err) throw err;
+        console.log("No error in getting data");
+        console.log("sending:", result);
         res.send({
             data: result
         });
