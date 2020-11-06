@@ -44,6 +44,7 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await fs.promises.readFile("teams.csv", "utf-8")
     // });
+    console.log("/get_team_data activated")
     client.query("SELECT * FROM public.teams_test;", (err, result) => {
         if (err) throw err;
         console.log("No error in getting data");
