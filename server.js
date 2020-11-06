@@ -44,16 +44,13 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await fs.promises.readFile("teams.csv", "utf-8")
     // });
-    console.log("GETTING STUFF");
     client.query("SELECT * FROM public.teams_test;", (err, result) => {
         if (err) throw err;
         res.send({
             data: result
         });
-        console.log("GOT?");
         client.end();
     });
-    console.log("ENDING?");
     res.end();
 });
 
