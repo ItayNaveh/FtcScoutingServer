@@ -3,10 +3,19 @@ const PORT = process.env.PORT || 3000;
 // const spoopDB = require("spoop-db");
 // const db = spoopDB.createDBNoId("teams.db");
 
-const fs = require("fs");
-const teams = fs.createWriteStream("teams.csv", {
-    flags:'a',
-    autoClose: true
+// const fs = require("fs");
+// const teams = fs.createWriteStream("teams.csv", {
+//     flags:'a',
+//     autoClose: true
+// });
+
+const pg = require('pg');
+
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 const express = require("express");
@@ -32,8 +41,13 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await db.getDB()
     // });
+    // res.send({
+    //     data: await fs.promises.readFile("teams.csv", "utf-8")
+    // });
+    const result = await client.query("SELECT * FROM public.teams_test;");
+    client.end();
     res.send({
-        data: await fs.promises.readFile("teams.csv", "utf-8")
+        data: result
     });
     res.end();
 });
@@ -44,7 +58,12 @@ app.post("/add_team_data", async(req, res) => {
     //     teamName: req.body.teamName
     // });
     const {teamNumber, teamName} = req.body;
-    teams.write(`\n${teamNumber}, ${teamName}`);
+    // teams.write(`\n${teamNumber}, ${teamName}`);
+    client.query(`INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`, (err, result) => {
+        if (err) throw err;
+        console.log("Done:", result);
+        client.end();
+    });
     // console.log("/add_team_data: body:", req.body);
     res.send("thanks");
     res.end();
@@ -53,10 +72,16 @@ app.post("/add_team_data", async(req, res) => {
 app.post("/clear_all_data", (req, res) => {
     if (req.body.password) {
         if (req.body.password == process.env.PASSWORD) {
-            fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
-                if (err) throw err;
+            // fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
+            //     if (err) throw err;
+            // });
+            client.query("DELETE FROM public.teams_test;", (err, result) => {
+                console.log("Done Clearing:", result);
+                client.end();
+                res.send("done clearing");
             });
-            res.send("done");
+        } else {
+            res.send("WRONG");
         }
     } else {
         res.send("no");
