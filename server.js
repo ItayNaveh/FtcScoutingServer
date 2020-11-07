@@ -95,30 +95,30 @@ app.post("/add_team_data", async(req, res) => {
     res.end();
 });
 
-app.post("/clear_all_data", async(req, res) => {
-    if (req.body.password) {
-        if (req.body.password == process.env.PASSWORD) {
-            // fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
-            //     if (err) throw err;
-            // });
-            // client.query("DELETE FROM public.teams_test;", (err, result) => {
-            //     console.log("Done Clearing:", result);
-            //     client.end();
-            //     res.send("done clearing");
-            // });
-            await db.remove((err) => {
-                if (err) throw err;
-                else res.send("done clearing");
-            })
-        } else {
-            res.send("WRONG");
-        }
-    } else {
-        res.send("no");
-    }
+// app.post("/clear_all_data", async(req, res) => {
+//     if (req.body.password) {
+//         if (req.body.password == process.env.PASSWORD) {
+//             // fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
+//             //     if (err) throw err;
+//             // });
+//             // client.query("DELETE FROM public.teams_test;", (err, result) => {
+//             //     console.log("Done Clearing:", result);
+//             //     client.end();
+//             //     res.send("done clearing");
+//             // });
+//             await db.remove((err) => {
+//                 if (err) throw err;
+//                 else res.send("done clearing");
+//             })
+//         } else {
+//             res.send("WRONG");
+//         }
+//     } else {
+//         res.send("no");
+//     }
 
-    res.end();
-});
+//     res.end();
+// });
 
 
 app.listen(PORT, function() {
