@@ -31,7 +31,7 @@ firebase.initializeApp({
 });
 
 const firebaseDB = firebase.database();
-const db = firebaseDB.ref("scores");
+const db = firebaseDB.ref("teams");
 
 const express = require("express");
 const app = express();
@@ -95,7 +95,7 @@ app.post("/add_team_data", async(req, res) => {
     res.end();
 });
 
-app.post("/clear_all_data", (req, res) => {
+app.post("/clear_all_data", async(req, res) => {
     if (req.body.password) {
         if (req.body.password == process.env.PASSWORD) {
             // fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
@@ -106,7 +106,7 @@ app.post("/clear_all_data", (req, res) => {
             //     client.end();
             //     res.send("done clearing");
             // });
-            db.remove((err) => {
+            await db.remove((err) => {
                 if (err) throw err;
                 else res.send("done clearing");
             })
