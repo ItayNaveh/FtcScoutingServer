@@ -9,14 +9,29 @@ const PORT = process.env.PORT || 3000;
 //     autoClose: true
 // });
 
-const pg = require('pg');
+// const pg = require('pg');
 
-const client = new pg.Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+// const client = new pg.Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+const firebase = require("firebase").default;
+firebase.initializeApp({
+    apiKey: "AIzaSyDVHiuaLKCWdGeYbUXP91eTk-KdfXcTWoM",
+    authDomain: "ftc-scouting-server.firebaseapp.com",
+    databaseURL: "https://ftc-scouting-server.firebaseio.com",
+    projectId: "ftc-scouting-server",
+    storageBucket: "ftc-scouting-server.appspot.com",
+    messagingSenderId: "663608987721",
+    appId: "1:663608987721:web:185b0bba09b20fafcd2f98",
+    measurementId: "G-C5K5PGYN7V"
 });
+
+const firebaseDB = firebase.database();
+const db = firebaseDB.ref("scores");
 
 const express = require("express");
 const app = express();
@@ -44,16 +59,17 @@ app.get("/get_team_data", async(req, res) => {
     // res.send({
     //     data: await fs.promises.readFile("teams.csv", "utf-8")
     // });
-    console.log("/get_team_data activated")
-    client.query("SELECT * FROM public.teams_test;", (err, result) => {
-        if (err) throw err;
-        console.log("No error in getting data");
-        console.log("sending:", result);
-        res.send({
-            data: result
-        });
-        client.end();
-    });
+    // console.log("/get_team_data activated")
+    // client.query("SELECT * FROM public.teams_test;", (err, result) => {
+    //     if (err) throw err;
+    //     console.log("No error in getting data");
+    //     console.log("sending:", result);
+    //     res.send({
+    //         data: result
+    //     });
+    //     client.end();
+    // });
+    res.send({data: db.toJSON});
     res.end();
 });
 
@@ -64,11 +80,15 @@ app.post("/add_team_data", async(req, res) => {
     // });
     const {teamNumber, teamName} = req.body;
     // teams.write(`\n${teamNumber}, ${teamName}`);
-    console.log("Inserting:", `INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`);
-    client.query(`INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`, (err, result) => {
-        if (err) throw err;
-        console.log("Done:", result);
-        client.end();
+    // console.log("Inserting:", `INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`);
+    // client.query(`INSERT INTO public.teams_test(id, teamName, teamNumber) VALUES(DEFAULT, "${teamName}", ${teamNumber});`, (err, result) => {
+    //     if (err) throw err;
+    //     console.log("Done:", result);
+    //     client.end();
+    // });
+    db.push({
+        teamName: teamName,
+        teamNumber: teamNumber
     });
     // console.log("/add_team_data: body:", req.body);
     res.send("thanks");
@@ -81,11 +101,15 @@ app.post("/clear_all_data", (req, res) => {
             // fs.writeFile("teams.csv", "teamNumber, teamName", (err) => {
             //     if (err) throw err;
             // });
-            client.query("DELETE FROM public.teams_test;", (err, result) => {
-                console.log("Done Clearing:", result);
-                client.end();
-                res.send("done clearing");
-            });
+            // client.query("DELETE FROM public.teams_test;", (err, result) => {
+            //     console.log("Done Clearing:", result);
+            //     client.end();
+            //     res.send("done clearing");
+            // });
+            db.remove((err) => {
+                if (err) throw err;
+                else res.send("done clearing");
+            })
         } else {
             res.send("WRONG");
         }

@@ -18,6 +18,6 @@
   "homepage": "https://github.com/ItayNaveh/FtcScoutingServer#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "pg": "^8.4.2"
+    "firebase": "^8.0.1"
   }
 }
